@@ -1,91 +1,76 @@
 package RPG.life;
 
-import RPG.world.StartLocation;
+import RPG.life.Fighter;
 
-public class Entity {
-    String type = "Monster";
-    int health;
-    int damage;
-    int dexterity;
-    int goldForKill;
-    boolean isAlive = true;
-
-    public Entity(String type, int health, int damage, int dexterity, int goldForKill) {
-        this.type = type;
-        this.health = health;
-        this.damage = damage;
+public abstract class Entity implements Fighter {
+    //Имя персонажа
+    private String name;
+    //Статы персонажа
+    private int healthPoints;
+    private int strength;
+    private int dexterity;
+    //Опыт и золото
+    private int xp;
+    private int gold;
+    //Конструктор
+    public Entity(String name, int healthPoints, int strength, int dexterity, int xp, int gold) {
+        this.name = name;
+        this.healthPoints = healthPoints;
+        this.strength = strength;
         this.dexterity = dexterity;
-        this.goldForKill = goldForKill;
-
-        if (!type.equals("hero"))
-            System.out.println(type + " spawned nearby...");
+        this.xp = xp;
+        this.gold = gold;
+    }
+    //Метод для ведения боя
+    @Override
+    public int attack() {
+        if (dexterity * 3 > getRandomValue()) return strength;
+        else return  0;
     }
 
-    void attack(Entity entity) {
-        final int entityDex = entity.getDexterity();
-        final double attackChance = (double) dexterity / entityDex;
-//        final double critChance = ; // todo
-
-        entity.takeDamage(damage);
+    public String getName() {
+        return name;
     }
-
-    public void takeDamage(int damage) {
-        if (!isAlive) return;
-
-        this.health -= damage;
-        if (health < 0) {
-            health = 0;
-            isAlive = false;
-
-            System.out.println(type + " is killed!");
-        }
+    //Геттеры и сеттеры
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public int getHealth() {
-        return health;
+    public int getHealthPoints() {
+        return healthPoints;
     }
-
-    public void setHealth(int health) {
-        this.health = health;
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
     }
-
-    public int getDamage() {
-        return damage;
+    public int getStrength() {
+        return strength;
     }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
-
     public int getDexterity() {
         return dexterity;
     }
-
     public void setDexterity(int dexterity) {
         this.dexterity = dexterity;
     }
-
-    public String getType() {
-        return type;
+    public int getXp() {
+        return xp;
     }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setXp(int xp) {
+        this.xp = xp;
     }
-
-    public int getGoldForKill() {
-        return goldForKill;
+    public int getGold() {
+        return gold;
     }
-
-    public void setGoldForKill(int goldForKill) {
-        this.goldForKill = goldForKill;
+    public void setGold(int gold) {
+        this.gold = gold;
     }
-
-    public boolean isAlive() {
-        return isAlive;
+    private int getRandomValue() {
+        return (int) (Math.random() * 100);
     }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
+    //Переопределяем вывод в консоль, чтобы выводилось имя и очки здоровья
+    @Override
+    public String toString() {
+        return String.format("%s здоровье:%d", name, healthPoints);
     }
 }

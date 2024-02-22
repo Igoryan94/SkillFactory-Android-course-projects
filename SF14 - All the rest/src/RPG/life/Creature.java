@@ -22,16 +22,14 @@ public class Creature implements Fighter {
 
     @Override
     public int attack() {
-        int damage = strength;
-
         // Логика критических попаданий
         if (dexterity > getRandomValue() * 3/2) {
             System.out.println("Критический удар!");
-            damage *= 2;
+            return strength * 2;
         }
 
-        if (dexterity * 3 > getRandomValue()) return damage;
-        else return  0;
+        if (dexterity * 3 > getRandomValue()) return strength;
+        else return 0;
     }
 
     // Повышение уровня, если достаточно опыта

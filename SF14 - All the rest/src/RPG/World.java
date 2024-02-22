@@ -1,9 +1,6 @@
 package RPG;
 
-import RPG.life.Entity;
-import RPG.life.Goblin;
-import RPG.life.Player;
-import RPG.life.Skeleton;
+import RPG.life.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +25,7 @@ public class World {
         }
     }
 
+    @SuppressWarnings("InfiniteRecursion")
     private static void command(String string) throws IOException {
         //Если это первый запуск, то мы должны создать игрока, именем будет служить первая введенная строка из консоли
         if (player == null) {
@@ -40,7 +38,7 @@ public class World {
         //Варианты для команд
         switch (string) {
             case "1": {
-                System.out.println("Торговец еще не приехал");
+                System.out.println("Торговец ещё не приехал");
                 command(br.readLine());
             }
             break;
@@ -74,12 +72,16 @@ public class World {
         battleScene.fight(player, createMonster(), new FightCallback() {
             @Override
             public void fightWin() {
-                System.out.printf("%s победил! Теперь у вас %d опыта и %d золота, а также осталось %d едениц здоровья.%n", player.getName(), player.getXp(), player.getGold(), player.getHealthPoints());
-                System.out.println("Желаете продолжить поход или вернуться в город? (да/нет)");
+                System.out.printf("%s победил! Теперь у вас %d опыта и %d золота," +
+                        " а также осталось %d единиц здоровья.%n", player.getName(),
+                        player.getXp(), player.getGold(), player.getHealthPoints());
+                player.checkLevelUp();
+                System.out.println("Желаете продолжить поход или вернуться в город?" +
+                        " (да/нет)");
                 try {
                     command(br.readLine());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Ошибка в логике чтения команд! Текст: " + e);
                 }
             }
 
@@ -95,7 +97,7 @@ public class World {
         void fightLost();
     }
 
-    private static Entity createMonster() {
+    private static Creature createMonster() {
         //Рандомайзер
         int random = (int) (Math.random() * 10);
         //С вероятностью 50% создается или скелет, или гоблин

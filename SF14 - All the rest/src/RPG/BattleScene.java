@@ -1,11 +1,11 @@
 package RPG;
 
-import RPG.life.Entity;
+import RPG.life.Creature;
 import RPG.life.Player;
 
 public class BattleScene {
     //Метод, который вызывается при начале боя, сюда мы передаем ссылки на нашего героя и монстра, который встал у него на пути
-    public void fight(Entity hero, Entity monster, World.FightCallback fightCallback) {
+    public void fight(Creature hero, Creature monster, World.FightCallback fightCallback) {
         //Ходы будут идти в отдельном потоке
         Runnable runnable = () -> {
             //Сюда будем записывать, какой сейчас ход по счету
@@ -34,7 +34,7 @@ public class BattleScene {
         thread.start();
     }
     //Метод для совершения удара
-    private Boolean makeHit(Entity defender, Entity attacker, World.FightCallback fightCallback) {
+    private Boolean makeHit(Creature defender, Creature attacker, World.FightCallback fightCallback) {
         //Получаем силу удара
         int hit = attacker.attack();
         //Отнимаем количество урона из здоровья защищающегося

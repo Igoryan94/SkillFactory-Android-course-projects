@@ -53,7 +53,7 @@ public class Creature implements Fighter {
         int addedDex = calculateDexterity() - dexterity;
         dexterity += addedDex;
 
-        System.out.printf("%s достиг нового уровня %d! Изменения:" +
+        System.out.printf("%s достиг уровня %d! Изменения:" +
                         " здоровье: +%d очков (всего %d)," +
                         " сила: +%d очков," +
                         " ловкость: +%d очков.\n",
